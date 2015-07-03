@@ -8,7 +8,8 @@ class Player
   attr_accessor :name
   attr_accessor :position
   attr_reader :keys
-  def add_key(num)
+
+  def add_key!(num)
     @keys += num
   end
   
@@ -16,7 +17,7 @@ class Player
     puts "You have #{@keys} keys."
   end
 
-  def move(x, y)
+  def move!(x, y)
     @position[:x] += x
     @position[:y] += y
   end

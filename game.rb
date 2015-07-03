@@ -1,17 +1,34 @@
 require './player.rb'
-require './layers.rb'
-require './logic.rb'
-puts Helper.get_current_pos($layers[:tiles])
+require './helper.rb'
+
 class Game
-  @@start_pos = Helper.get_current_pos($layers[:tiles])
+  @@layers =
+  {
+    tiles: 
+    [
+      ['#', 'E', '#', '#', '#', '#', '#', '#', '#'],
+      ['#', '-', '#', '#', '#', '#', '-', '-', '-'],
+      ['#', '-', '-', '-', '-', '#', '-', '#', '-'],
+      ['#', '#', '#', '#', '-', '#', '-', '-', '#'],
+      ['#', '#', '#', '#', '-', 'D', '#', '-', '-'],
+      ['#', '#', '#', '#', '#', '-', '#', '#', '-'],
+      ['#', '-', '-', '-', '-', '-', '#', '-', '-'],
+      ['K', '-', '#', '#', '#', '-', '#', '-', '#'],
+      ['#', '#', '-', '-', '-', '-', '-', '-', '#'],
+      ['#', '#', '-', '#', '#', '#', '#', '#', '#'],
+      ['#', '#', 'C', '#', '#', '#', '#', '#', '#']
+    ]
+  }
+  @@start_pos = Helper.get_current_pos(@@layers[:tiles])
   def initialize(player_name)
     @player = Player.new(player_name, @@start_pos)
-    @tile_layer = $layers[:tiles]
+    @tile_layer = @@layers[:tiles]
     @current_level = 0
   end
   attr_reader :start_pos
   def print_help
     puts "Use the keyboard to move. N=North, S=South, W=West, E=East"
+    puts "Q or Quit to exit the game."
     puts "# means that you cannot move there."
     puts "X is the edge of the maze."
     puts "D is a door."
@@ -57,23 +74,22 @@ class Game
       Helper.set_tile(@tile_layer, @player.position[:x], @player.position[:y], '-')
       tile = Helper.get_tile(@tile_layer, @player.position[:x] + dirx, @player.position[:y] + diry)
       if tile.match(/[-EK]/)
-        @player.move(dirx, diry)
+        @player.move!(dirx, diry)
         if tile == 'E'
           puts "Congratulations! You found the exit!"
         end
         if tile == 'K'
           puts "You found a key!"
-          @player.add_key(1)
+          @player.add_key!(1)
         end
-
       else
         if tile == 'D'
           if @player.keys <= 0
             puts "You need a key to get through that door!"
           else
             puts "You unlocked the door with a key!"
-            @player.move(dirx, diry)
-            @player.add_key(-1)
+            @player.move!(dirx, diry)
+            @player.add_key!(-1)
           end
         else
           puts "Cannot move there!"

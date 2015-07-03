@@ -3,7 +3,6 @@ require './game.rb'
 
 
 
-#test code
 def main_loop(game)
   game.game_loop!
 end
