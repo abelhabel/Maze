@@ -14,14 +14,18 @@ class Game
   end
   private
   def print_help
+    puts "--Input the characters below and hit ENTER to execute the commands.--"
     puts "Use the keyboard to move. N=North, S=South, W=West, E=East"
+    puts "I or Inventory to open inventory."
     puts "Q or Quit to exit the game."
+    puts ''
+    puts "--The characters below have the following meaning--"
     puts "# means that you cannot move there."
     puts "X is the edge of the maze."
     puts "D is a door."
     puts "K is a key."
     puts "E is the maze Exit and end goal."
-    puts "I or Inventory to open inventory."
+    puts "- is a walkable tile."
   end
 
   def print_view
@@ -113,7 +117,9 @@ class Game
     #instruct
     remain = true
     update_player_position!
-    puts "At any time, type 'h' or 'help' to see input controls."
+    puts "Welcome to The Maze, #{@player.name}."
+    puts "The square below shows you the immediate tiles to the North, South, West and East."
+    puts "At any time, type 'h' or 'help' to see what the characters mean and to see input controls."
     while remain
       print_view
       input = gets.chomp
