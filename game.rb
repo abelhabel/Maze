@@ -1,31 +1,18 @@
 require './player.rb'
 require './helper.rb'
-
+require './level.rb'
 class Game
-  @@layers =
-  {
-    tiles: 
-    [
-      ['#', 'E', '#', '#', '#', '#', '#', '#', '#'],
-      ['#', '-', '#', '#', '#', '#', '-', '-', '-'],
-      ['#', '-', '-', '-', '-', '#', '-', '#', '-'],
-      ['#', '#', '#', '#', '-', '#', '-', '-', '#'],
-      ['#', '#', '#', '#', '-', 'D', '#', '-', '-'],
-      ['#', '#', '#', '#', '#', '-', '#', '#', '-'],
-      ['#', '-', '-', '-', '-', '-', '#', '-', '-'],
-      ['K', '-', '#', '#', '#', '-', '#', '-', '#'],
-      ['#', '#', '-', '-', '-', '-', '-', '-', '#'],
-      ['#', '#', '-', '#', '#', '#', '#', '#', '#'],
-      ['#', '#', 'C', '#', '#', '#', '#', '#', '#']
-    ]
-  }
-  @@start_pos = Helper.get_current_pos(@@layers[:tiles])
   def initialize(player_name)
-    @player = Player.new(player_name, @@start_pos)
-    @tile_layer = @@layers[:tiles]
-    @current_level = 0
+    @player = Player.new(player_name, {})
+    @current_layer = 0
+    @level = Level.new(0)
   end
+  attr_reader :level
   attr_reader :start_pos
+  def update_player_position!
+    @player.position = Helper.get_current_pos(@level.get_map)
+  end
+  private
   def print_help
     puts "Use the keyboard to move. N=North, S=South, W=West, E=East"
     puts "Q or Quit to exit the game."
@@ -34,13 +21,14 @@ class Game
     puts "D is a door."
     puts "K is a key."
     puts "E is the maze Exit and end goal."
+    puts "I or Inventory to open inventory."
   end
 
   def print_view
-    left = Helper.get_tile(@tile_layer, @player.position[:x] -1, @player.position[:y])
-    right = Helper.get_tile(@tile_layer, @player.position[:x] +1, @player.position[:y])
-    up = Helper.get_tile(@tile_layer, @player.position[:x], @player.position[:y] -1)
-    down = Helper.get_tile(@tile_layer, @player.position[:x], @player.position[:y] + 1)
+    left = Helper.get_tile(@level.get_map, @player.position[:x] -1, @player.position[:y])
+    right = Helper.get_tile(@level.get_map, @player.position[:x] +1, @player.position[:y])
+    up = Helper.get_tile(@level.get_map, @player.position[:x], @player.position[:y] -1)
+    down = Helper.get_tile(@level.get_map, @player.position[:x], @player.position[:y] + 1)
     puts "---------"
     puts "|   #{up}   |"
     puts "| #{left}   #{right} |"
@@ -71,12 +59,24 @@ class Game
     end
 
     if dirx != 0 || diry != 0
-      Helper.set_tile(@tile_layer, @player.position[:x], @player.position[:y], '-')
-      tile = Helper.get_tile(@tile_layer, @player.position[:x] + dirx, @player.position[:y] + diry)
+      Helper.set_tile(@level.get_map, @player.position[:x], @player.position[:y], '-')
+      tile = Helper.get_tile(@level.get_map, @player.position[:x] + dirx, @player.position[:y] + diry)
       if tile.match(/[-EK]/)
         @player.move!(dirx, diry)
         if tile == 'E'
-          puts "Congratulations! You found the exit!"
+          puts "You found the exit!"
+          if @level.next_level!
+            update_player_position!
+            puts "However, all you found was a new maze! The horror!"
+          else
+            puts "Congratulations to completing the game."
+            puts "Credits"
+            puts "Programming: Andreas Olsson"
+            puts "Design: Andreas Olsson"
+            puts "Graphics: Andreas Olsson"
+            puts "A/V-FX: Jorv Xerxor"
+            return false;
+          end
         end
         if tile == 'K'
           puts "You found a key!"
@@ -108,9 +108,11 @@ class Game
     return true
   end
 
+  public
   def game_loop!
     #instruct
     remain = true
+    update_player_position!
     puts "At any time, type 'h' or 'help' to see input controls."
     while remain
       print_view
