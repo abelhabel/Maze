@@ -1,3 +1,5 @@
+# Players handles position
+# 0 errors in rubocop
 class Player
   def initialize(name, pos)
     @name = name
@@ -12,7 +14,7 @@ class Player
   def add_key!(num)
     @keys += num
   end
-  
+
   def print_inventory
     puts "You have #{@keys} keys."
   end

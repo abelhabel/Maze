@@ -1,3 +1,4 @@
+# 0 errors in rubocop
 def load_level(level = 0)
   file_name = "./data/levels/level#{level}.txt"
   if File.exist?(file_name)
@@ -7,10 +8,7 @@ def load_level(level = 0)
     return false
   end
 
-  def objectify(str)
-    arr = []
-    str.each_line{|line| arr << line.split(' ')}
-    arr
-  end
-  objectify(content)
+  arr = []
+  content.each_line { |line| arr << line.split(' ') }
+  arr
 end
