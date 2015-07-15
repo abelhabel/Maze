@@ -3,6 +3,54 @@ require './player.rb'
 require './level.rb'
 require './print.rb'
 require './parse.rb'
+require 'io/console'
+
+def read_char
+  STDIN.echo = false
+  STDIN.raw!
+ 
+  input = STDIN.getc.chr
+  if input == "\e" then
+    input << STDIN.read_nonblock(3) rescue nil
+    input << STDIN.read_nonblock(2) rescue nil
+  end
+ensure
+  STDIN.echo = true
+  STDIN.cooked!
+ 
+  return input
+end
+
+def read_single_key
+  c = read_char
+ 
+  case c
+  when "\u0003"
+    puts "CONTROL-C"
+    exit 0
+  when "h"
+    return 'help'
+  when "q"
+    return 'quit'
+  when "i"
+    return 'inventory'
+  when "\e[A"
+    puts "UP"
+    return 'up'
+  when "\e[B"
+    puts "DOWN"
+    return 'down'
+  when "\e[C"
+    puts "RIGHT"
+    return 'right'
+  when "\e[D"
+    puts "LEFT"
+    return 'left'
+  else
+    return 'No valid input'
+  end
+end
+
 class Game
 
   attr_reader :level
@@ -26,7 +74,7 @@ class Game
     puts "At any time, type 'h' or 'help' to see what the characters mean and to see input controls."
     while remain
       Print.view(@level.get_adjacent_tiles(@player.position[:x], @player.position[:y]))
-      input = gets.chomp
+      input = read_single_key
       remain = Parser.parse(input, @player, @level)
     end
   end

@@ -5,14 +5,14 @@ class Level
   attr_reader :map
   def initialize(level)
     @current_level = level
-    @map = Loader.load_level(1)
+    @map = Loader.load_level(0)
   end
 
   def get_tile(posx, posy)
     maxy = @map.count
     maxx = @map[@map.count - 1].count
-    return 'X' if posy >= maxy
-    return 'X' if posx >= maxx
+    return 'X' if (posy >= maxy || posy < 0)
+    return 'X' if (posx >= maxx || posx < 0)
     @map[posy][posx]
   end
 

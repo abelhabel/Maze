@@ -27,7 +27,8 @@ class Player
   end
 
   def print_inventory
-    puts "You have #{@keys} keys."
+    puts "You have #{@keys} keys." if @keys > 0 
+    puts "You have #{@gems} gems." if @gems > 0
   end
 
   def move!(x, y)

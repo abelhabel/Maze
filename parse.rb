@@ -5,14 +5,23 @@ class Parser
 
   end
 
+  # when "\e[A"
+  #   puts "UP ARROW"
+  # when "\e[B"
+  #   puts "DOWN ARROW"
+  # when "\e[C"
+  #   puts "RIGHT ARROW"
+  # when "\e[D"
+  #   puts "LEFT ARROW"
+
   def self.parse(text, player, level)
-    north = 'n'
-    south = 's'
-    west = 'w'
-    east = 'e'
-    help = /h|help/
-    quit = /q|quit/
-    inventory = /i|inventory/
+    north = 'up'
+    south = 'down'
+    west = 'left'
+    east = 'right'
+    help = 'help'
+    quit = 'quit'
+    inventory = 'inventory'
 
     dirx = 0
     diry = 0
@@ -29,7 +38,7 @@ class Parser
 
     if dirx != 0 || diry != 0
       tile = level.get_tile(player.position[:x] + dirx, player.position[:y] + diry)
-      if tile.match(/[-EKGT]/)
+      if tile.match(/[-EKGTC]/)
         player.move!(dirx, diry)
         if tile == 'E'
           puts 'You found the exit!'
@@ -68,6 +77,7 @@ class Parser
             puts 'You unlocked the door with a key!'
             player.move!(dirx, diry)
             player.add_key(-1)
+            level.set_tile!(player.position[:x], player.position[:y], '-')
           end
         elsif tile == 'P'
           if player.gems <= 0
