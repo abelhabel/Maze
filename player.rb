@@ -1,18 +1,29 @@
 # Players handles position
 # 0 errors in rubocop
 class Player
+
+  attr_accessor :name
+  attr_accessor :position
+  attr_reader :keys, :gems, :treasures
+
   def initialize(name, pos)
     @name = name
     @position = pos
     @keys = 0
+    @gems = 0
+    @treasures = 0
   end
 
-  attr_accessor :name
-  attr_accessor :position
-  attr_reader :keys
-
-  def add_key!(num)
+  def add_key(num)
     @keys += num
+  end
+
+  def add_gem(num)
+    @gems += num
+  end
+
+  def add_treasure(num)
+    @treasures += num
   end
 
   def print_inventory
@@ -22,5 +33,9 @@ class Player
   def move!(x, y)
     @position[:x] += x
     @position[:y] += y
+  end
+  
+  def move_to(pos)
+    @position = pos
   end
 end

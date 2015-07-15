@@ -1,13 +1,12 @@
 # Level stores the current level loaded.
 # 'missing top level class commer' in rubocop. disregard
-require './saveload.rb'
+require './loader.rb'
 class Level
+  attr_reader :map
   def initialize(level)
     @current_level = level
-    @map = load_level(level)
+    @map = Loader.load_level(1)
   end
-
-  attr_reader :map
 
   def get_tile(posx, posy)
     maxy = @map.count
@@ -39,8 +38,22 @@ class Level
     pos
   end
 
+  def next_portal(exclude_pos)
+    p = {}
+    @map.each_index do |y| 
+      @map[y].each_index do |x|
+        if ( @map[y][x] == 'P' && !(y == exclude_pos[:y] && x == exclude_pos[:x]) )
+          p[:y] = y
+          p[:x] = x 
+        end
+      end
+    end
+    puts p
+    p
+  end
+
   def next_level!
     @current_level += 1
-    @map = load_level(@current_level)
+    @map = Loader.load_level(@current_level)
   end
 end

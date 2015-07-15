@@ -20,7 +20,7 @@ module Print
     # ulrd = up left right down
     puts '---------'
     puts "|   #{ulrd[0]}   |"
-    puts "| #{ulrd[1]}   #{ulrd[2]} |"
+    puts "| #{ulrd[1]} ♀ #{ulrd[2]} |"
     puts "|   #{ulrd[3]}   |"
     puts '---------'
   end
