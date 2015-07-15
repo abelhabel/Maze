@@ -1,6 +1,4 @@
 # 0 errors in rubocop
-require 'curses'
-include Curses
 require './game.rb'
 
 def main_loop(game)
