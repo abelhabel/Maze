@@ -11,13 +11,14 @@ class Player < ActiveRecord::Base
   before_save :hash_new_password #:if=>:password_changed?
 
   attr_accessor :name, :position, :new_password, :new_password_confirmation
-  attr_reader :keys, :gems, :treasures
+  attr_reader :keys, :gems, :treasures, :steps
 
   def custom_initialize
     @position = {}
     @keys = 0
     @gems = 0
     @treasures = 0
+    @steps = 0
   end
 
   def add_key(num)
@@ -26,6 +27,10 @@ class Player < ActiveRecord::Base
 
   def add_gem(num)
     @gems += num
+  end
+
+  def add_step(num)
+    @steps += num
   end
 
   def add_treasure(num)

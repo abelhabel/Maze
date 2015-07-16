@@ -62,6 +62,10 @@ class Game
     @level = Level.new(0)
   end
   
+  def calculate_score
+    [0, 100 - @player.steps + @player.treasures].max
+  end
+
   def update_player_position!
     @player.position = @level.current_pos
   end
