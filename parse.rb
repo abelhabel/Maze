@@ -15,6 +15,7 @@ class Parser
   #   puts "LEFT ARROW"
 
   def self.parse(text, player, level)
+    puts player
     north = 'up'
     south = 'down'
     west = 'left'
@@ -58,6 +59,7 @@ class Parser
         end
         if tile == 'K'
           puts 'You found a key!'
+          puts player
           player.add_key(1)
         end
         if tile == 'G'

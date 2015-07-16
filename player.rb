@@ -1,14 +1,20 @@
 # Players handles position
 # 0 errors in rubocop
-class Player
+require 'bcrypt'
+require 'active_record'
 
-  attr_accessor :name
-  attr_accessor :position
+class Player < ActiveRecord::Base
+  
+  include BCrypt
+  has_many :scores
+  validates_confirmation_of :new_password #:if=>:password_changed?
+  before_save :hash_new_password #:if=>:password_changed?
+
+  attr_accessor :name, :position, :new_password, :new_password_confirmation
   attr_reader :keys, :gems, :treasures
 
-  def initialize(name, pos)
-    @name = name
-    @position = pos
+  def custom_initialize
+    @position = {}
     @keys = 0
     @gems = 0
     @treasures = 0
@@ -27,8 +33,7 @@ class Player
   end
 
   def print_inventory
-    puts "You have #{@keys} keys." if @keys > 0 
-    puts "You have #{@gems} gems." if @gems > 0
+    puts "You have #{@keys} keys."
   end
 
   def move!(x, y)
@@ -39,4 +44,24 @@ class Player
   def move_to(pos)
     @position = pos
   end
+
+  # def password_changed?
+  #   !@new_password.blank?
+  # end
+
+  def self.authenticate(user, password)
+    if user
+      if BCrypt::Password.new(user.hashed_password).is_password? password
+        return user
+      end
+    end
+    return nil
+  end
+
+  private
+  
+  def hash_new_password
+    self.hashed_password = BCrypt::Password.create(@new_password)
+  end
+
 end

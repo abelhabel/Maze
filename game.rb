@@ -56,8 +56,8 @@ class Game
   attr_reader :level
   attr_reader :start_pos
   
-  def initialize(player_name)
-    @player = Player.new(player_name, {})
+  def initialize(player)
+    @player = player
     @current_layer = 0
     @level = Level.new(0)
   end
