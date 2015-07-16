@@ -5,7 +5,7 @@ class Level
   attr_reader :map
   def initialize(level)
     @current_level = level
-    @map = Loader.load_level(0)
+    @map = Loader.load_level(level)
   end
 
   def get_tile(posx, posy)

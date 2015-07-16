@@ -63,7 +63,7 @@ class Game
   end
   
   def calculate_score
-    [0, (100 - @player.steps) + (5 * @player.treasures)].max
+    [0, (100 - @player.steps) + (10 * @player.treasures)].max
   end
 
   def update_player_position!
@@ -77,7 +77,6 @@ class Game
     puts 'The square below shows you the immediate tiles to the North, South, West and East.'
     puts "At any time, type 'h' or 'help' to see what the characters mean and to see input controls."
     while remain
-      puts calculate_score
       Print.view(@level.get_adjacent_tiles(@player.position[:x], @player.position[:y]))
       input = read_single_key
       remain = Parser.parse(input, @player, @level)
