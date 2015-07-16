@@ -58,7 +58,7 @@ def create
   end while !@new_player.id
 end
 
-def run
+def connect
   ActiveRecord::Base.establish_connection(
   adapter: 'postgresql',
   database: 'd94rlf5a0tajfv',
@@ -69,57 +69,26 @@ def run
   pool: 5,
   encoding: 'unicode',
   min_messages: 'error')
+end
+
+def run
+  connect
   puts "L: login to account \nC: create new account"
   input = gets.chomp
   case input.downcase
     when 'l' then login
     when 'c' then create   
   end
+  show_high_scores
 end
 
-#run
-ActiveRecord::Base.establish_connection(
-  adapter: 'postgresql',
-  database: 'd94rlf5a0tajfv',
-  username: 'yrinmpfezklsvp',
-  password: 'lC8z5STnpJDrBLGiheiDWUqZZ4',
-  host: 'ec2-54-83-36-176.compute-1.amazonaws.com',
-  port: 5432,
-  pool: 5,
-  encoding: 'unicode',
-  min_messages: 'error')
-x = Score.joins('JOIN players ON players.id = scores.player_id ORDER BY scores.score DESC LIMIT(10)')
-puts "Highscore Table:"
-puts "-"*35
-puts "Name" +" "*(26)+"Score"
-puts "-"*35
-x.each {|i| puts "#{i.player.user_name}"+" "*(30-i.player.user_name.length)+"#{i.score}" }
+def show_high_scores
+  x = Score.joins('JOIN players ON players.id = scores.player_id ORDER BY scores.score DESC LIMIT(10)')
+  puts "Highscore Table:"
+  puts "-"*35
+  puts "Name" +" "*(26)+"Score"
+  puts "-"*35
+  x.each {|i| puts "#{i.player.user_name}"+" "*(30-i.player.user_name.length)+"#{i.score}" }
+end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+run
