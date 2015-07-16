@@ -63,7 +63,7 @@ class Game
   end
   
   def calculate_score
-    [0, 100 - @player.steps + @player.treasures].max
+    [0, (100 - @player.steps) + (10 * @player.treasures)].max
   end
 
   def update_player_position!

@@ -2,18 +2,21 @@
 require './level.rb'
 module Print
   def self.help
-    puts '--Input the characters below and hit ENTER to execute the commands.--'
-    puts 'Use the keyboard to move. N=North, S=South, W=West, E=East'
-    puts 'I or Inventory to open inventory.'
-    puts 'Q or Quit to exit the game.'
+    puts 'Use the arrow keys on your keyboard to move up, down, left and righ.'
+    puts '--Input the characters below for the following commands.--'
+    puts 'I to open inventory.'
+    puts 'Q to exit the game.'
     puts ''
     puts '--The characters below have the following meaning--'
-    puts '# means that you cannot move there.'
+    puts '# means a wall and you cannot move there.'
+    puts '- is a walkable tile.'
     puts 'X is the edge of the maze.'
     puts 'D is a door.'
     puts 'K is a key.'
     puts 'E is the maze Exit and end goal.'
-    puts '- is a walkable tile.'
+    puts 'G is a Gem.'
+    puts 'P is a Portal.'
+    puts 'T is a treasure. It gives you extra points in your final score.'
   end
 
   def self.view(ulrd)
