@@ -73,7 +73,7 @@ class Game
   def game_loop!
     remain = true
     update_player_position!
-    puts "Welcome to The Maze, #{@player.name}."
+    puts "Welcome to The Maze, #{@player.user_name}."
     puts 'The square below shows you the immediate tiles to the North, South, West and East.'
     puts "At any time, type 'h' or 'help' to see what the characters mean and to see input controls."
     while remain

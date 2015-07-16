@@ -10,7 +10,7 @@ class Player < ActiveRecord::Base
   validates_confirmation_of :new_password #:if=>:password_changed?
   before_save :hash_new_password #:if=>:password_changed?
 
-  attr_accessor :name, :position, :new_password, :new_password_confirmation
+  attr_accessor :position, :new_password, :new_password_confirmation
   attr_reader :keys, :gems, :treasures, :steps
 
   def custom_initialize
