@@ -15,7 +15,6 @@ class Parser
   #   puts "LEFT ARROW"
 
   def self.parse(text, player, level)
-    puts player
     north = 'up'
     south = 'down'
     west = 'left'
@@ -50,16 +49,14 @@ class Parser
           else
             puts 'Congratulations to completing the game.'
             puts 'Credits'
-            puts 'Programming: Andreas Olsson'
+            puts 'Programming: Andreas Olsson and Laith Azer'
             puts 'Design: Andreas Olsson'
             puts 'Graphics: Andreas Olsson'
-            puts 'A/V-FX: Jorv Xerxor'
             return false
           end
         end
         if tile == 'K'
           puts 'You found a key!'
-          puts player
           player.add_key(1)
         end
         if tile == 'G'

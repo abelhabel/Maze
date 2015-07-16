@@ -38,10 +38,13 @@ class Player < ActiveRecord::Base
   end
 
   def print_inventory
-    puts "You have #{@keys} keys."
+    puts "You have #{@keys} key(s)." if @keys > 0
+    puts "You have #{@gems} gem(s)." if @gems > 0
+    puts "You have #{@treasures} treasure(s)." if @treasures > 0
   end
 
   def move!(x, y)
+    self.add_step(1)
     @position[:x] += x
     @position[:y] += y
   end
